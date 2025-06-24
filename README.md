@@ -31,6 +31,7 @@ src/
     firestoreService.js
     paymentService.js
     adService.js
+    notificationService.js
 ```
 
 App.js at the project root initializes contexts and navigation.

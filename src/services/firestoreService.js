@@ -42,6 +42,16 @@ export const updateUserPlanStatus = async (userId, planStatus) => {
   }
 };
 
+// Update or store the FCM token for a user so push notifications can be sent
+export const updateUserFcmToken = async (userId, fcmToken) => {
+  try {
+    await usersCollection.doc(userId).update({ fcmToken });
+  } catch (error) {
+    console.log('Error updating FCM token:', error);
+    throw error;
+  }
+};
+
 // ----- Questions -----
 export const getQuestionsBySubjectAndSubtopic = async (subject, subtopic) => {
   try {

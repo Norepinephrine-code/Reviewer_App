@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { registerDeviceForPushNotifications } from '../services/notificationService';
 
 export const AuthContext = createContext();
 
@@ -12,6 +13,13 @@ export const AuthProvider = ({ children }) => {
     const unsubscribe = auth().onAuthStateChanged(setUser);
     return unsubscribe;
   }, []);
+
+  // Register for push notifications whenever a user is authenticated
+  useEffect(() => {
+    if (user) {
+      registerDeviceForPushNotifications(user.uid);
+    }
+  }, [user]);
 
   const signUp = async (email, password) => {
     try {
