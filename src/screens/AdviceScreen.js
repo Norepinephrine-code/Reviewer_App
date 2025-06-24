@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import CustomButton from '../components/CustomButton';
+import Header from '../components/Header';
 
 const modules = [
   {
@@ -62,15 +64,24 @@ const AdviceScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Header title="Advice" />
       <Text style={styles.title}>{module.title}</Text>
       <Text style={styles.content}>{module.parts[partIndex]}</Text>
       <View style={styles.navigation}>
-        <TouchableOpacity onPress={handlePrev} disabled={isFirst}>
-          <Text style={[styles.button, isFirst && styles.disabled]}>Previous</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleNext} disabled={isLast}>
-          <Text style={[styles.button, isLast && styles.disabled]}>Next</Text>
-        </TouchableOpacity>
+        <CustomButton
+          title="Previous"
+          onPress={handlePrev}
+          style={styles.navButton}
+          textStyle={[styles.buttonText, isFirst && styles.disabled]}
+          disabled={isFirst}
+        />
+        <CustomButton
+          title="Next"
+          onPress={handleNext}
+          style={styles.navButton}
+          textStyle={[styles.buttonText, isLast && styles.disabled]}
+          disabled={isLast}
+        />
       </View>
     </View>
   );
@@ -97,7 +108,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  button: {
+  navButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: '#eee',
+    borderRadius: 4,
+    alignItems: 'center',
+  },
+  buttonText: {
     fontSize: 16,
     color: '#2196F3',
   },
