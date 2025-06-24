@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import CustomButton from '../components/CustomButton';
+import AnswerOption from '../components/AnswerOption';
 
 const questions = [
   {
@@ -41,23 +42,17 @@ const QuizScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.question}>{question.question}</Text>
-      {question.options.map((option, idx) => {
-        let icon = '';
-        if (selected !== null) {
-          if (idx === question.correctIndex) icon = ' ✅';
-          if (idx === selected && idx !== question.correctIndex) icon = ' ❌';
-        }
-        return (
-          <TouchableOpacity
-            key={idx}
-            style={styles.option}
-            onPress={() => handleSelect(idx)}
-            disabled={selected !== null}
-          >
-            <Text>{option}{icon}</Text>
-          </TouchableOpacity>
-        );
-      })}
+      {question.options.map((option, idx) => (
+        <AnswerOption
+          key={idx}
+          text={option}
+          onPress={() => handleSelect(idx)}
+          showResult={selected !== null}
+          isCorrect={idx === question.correctIndex}
+          isSelected={idx === selected}
+          style={styles.option}
+        />
+      ))}
       {selected !== null && (
         <View style={styles.feedbackContainer}>
           <Text style={isCorrect ? styles.correct : styles.incorrect}>

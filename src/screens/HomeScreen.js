@@ -1,20 +1,23 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import CustomButton from '../components/CustomButton';
+import Header from '../components/Header';
 
 const HomeScreen = ({ navigation }) => (
   <View style={styles.container}>
-    <TouchableOpacity
-      style={styles.button}
+    <Header title="Home" />
+    <CustomButton
+      title="Review"
       onPress={() => navigation.navigate('Quiz')}
-    >
-      <Text style={styles.buttonText}>Review</Text>
-    </TouchableOpacity>
-    <TouchableOpacity
       style={styles.button}
+      textStyle={styles.buttonText}
+    />
+    <CustomButton
+      title="Advice and Guidance"
       onPress={() => navigation.navigate('Advice')}
-    >
-      <Text style={styles.buttonText}>Advice and Guidance</Text>
-    </TouchableOpacity>
+      style={styles.button}
+      textStyle={styles.buttonText}
+    />
   </View>
 );
 
