@@ -17,20 +17,20 @@ export const registerDeviceForPushNotifications = async (userId) => {
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
     if (!granted) {
-      console.log('FCM permission not granted');
+      console.log('[NotificationService] FCM permission not granted');
       return;
     }
 
     const fcmToken = await messaging().getToken();
-    console.log('FCM token obtained:', fcmToken);
+    console.log('[NotificationService] FCM token obtained:', fcmToken);
 
     await updateUserFcmToken(userId, fcmToken);
-    console.log('FCM token saved to Firestore');
+    console.log('[NotificationService] FCM token saved to Firestore');
 
     await messaging().subscribeToTopic('daily_reminder');
-    console.log('Subscribed to daily_reminder topic');
+    console.log('[NotificationService] Subscribed to topic: daily_reminder');
   } catch (error) {
-    console.log('Error registering device for push notifications:', error);
+    console.log('[NotificationService] Error registering device for push notifications:', error);
   }
 };
 
@@ -41,9 +41,9 @@ export const registerDeviceForPushNotifications = async (userId) => {
 export const unsubscribeFromDailyReminder = async () => {
   try {
     await messaging().unsubscribeFromTopic('daily_reminder');
-    console.log('Unsubscribed from daily_reminder topic');
+    console.log('[NotificationService] Unsubscribed from daily_reminder topic');
   } catch (error) {
-    console.log('Error unsubscribing from daily_reminder:', error);
+    console.log('[NotificationService] Error unsubscribing from daily_reminder:', error);
   }
 };
 

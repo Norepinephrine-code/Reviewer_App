@@ -14,13 +14,13 @@ export const PlanProvider = ({ children }) => {
 
   const fetchPlanStatus = async (uid) => {
     try {
-      console.log('Fetching plan status for:', uid);
+      console.log('[PlanContext] Fetching plan status for:', uid);
       const doc = await firestore().collection('users').doc(uid).get();
       const status = doc.exists ? doc.data().planStatus : 'basic';
-      console.log('Plan status fetched:', status);
+      console.log('[PlanContext] Fetched plan status:', status);
       setPlan(status === 'premium' ? 'premium' : 'basic');
     } catch (error) {
-      console.log('Error fetching plan status:', error);
+      console.log('[PlanContext] Error fetching plan status:', error);
       setPlan('basic');
     }
   };
@@ -32,6 +32,12 @@ export const PlanProvider = ({ children }) => {
       setPlan('basic');
     }
   }, [user]);
+
+  useEffect(() => {
+    if (plan === 'premium') {
+      console.log('[PlanContext] Plan upgraded to premium');
+    }
+  }, [plan]);
 
   const refreshPlanStatus = async () => {
     if (user) {
