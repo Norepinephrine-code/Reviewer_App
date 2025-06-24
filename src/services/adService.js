@@ -16,11 +16,11 @@ let interstitialLoaded = false;
  * Should be called once when the app launches.
  */
 export const initializeAds = () => {
-  console.log('Initializing AdMob with App ID:', ADMOB_APP_ID);
+  console.log('[AdService] Initializing AdMob with App ID:', ADMOB_APP_ID);
   mobileAds()
     .initialize()
-    .then(() => console.log('AdMob initialized'))
-    .catch((error) => console.log('AdMob initialization error:', error));
+    .then(() => console.log('[AdService] AdMob initialized'))
+    .catch((error) => console.log('[AdService] AdMob initialization error:', error));
 };
 
 /**
@@ -30,17 +30,17 @@ export const initializeAds = () => {
  */
 export const getBannerAd = (isPremium) => {
   if (isPremium) {
-    console.log('Premium user - banner ad skipped');
+    console.log('[AdService] Banner ad skipped for premium user');
     return null;
   }
 
-  console.log('Rendering banner ad');
+  console.log('[AdService] Rendering banner ad');
   return (
     <BannerAd
       unitId={ADMOB_BANNER_UNIT_ID}
       size={BannerAdSize.SMART_BANNER}
-      onAdLoaded={() => console.log('Banner ad loaded')}
-      onAdFailedToLoad={(err) => console.log('Banner ad failed to load:', err)}
+      onAdLoaded={() => console.log('[AdService] Banner ad loaded')}
+      onAdFailedToLoad={(err) => console.log('[AdService] Banner ad failed to load:', err)}
     />
   );
 };
@@ -51,22 +51,22 @@ export const getBannerAd = (isPremium) => {
  */
 export const loadInterstitialAd = (isPremium) => {
   if (isPremium) {
-    console.log('Premium user - interstitial ad not loaded');
+    console.log('[AdService] Interstitial ad not loaded for premium user');
     return;
   }
 
-  console.log('Loading interstitial ad');
+  console.log('[AdService] Loading interstitial ad');
   interstitial = InterstitialAd.createForAdRequest(ADMOB_INTERSTITIAL_UNIT_ID);
   interstitial.addAdEventListener(AdEventType.LOADED, () => {
-    console.log('Interstitial ad loaded');
+    console.log('[AdService] Interstitial ad loaded');
     interstitialLoaded = true;
   });
   interstitial.addAdEventListener(AdEventType.CLOSED, () => {
-    console.log('Interstitial ad closed');
+    console.log('[AdService] Interstitial ad closed');
     interstitialLoaded = false;
   });
   interstitial.addAdEventListener(AdEventType.ERROR, (error) => {
-    console.log('Interstitial ad error:', error);
+    console.log('[AdService] Interstitial ad error:', error);
     interstitialLoaded = false;
   });
   interstitial.load();
@@ -78,14 +78,14 @@ export const loadInterstitialAd = (isPremium) => {
  */
 export const showInterstitialAd = (isPremium) => {
   if (isPremium) {
-    console.log('Premium user - interstitial ad not shown');
+    console.log('[AdService] Interstitial ad not shown for premium user');
     return;
   }
 
   if (interstitialLoaded && interstitial) {
-    console.log('Showing interstitial ad');
+    console.log('[AdService] Showing interstitial ad');
     interstitial.show();
   } else {
-    console.log('Interstitial ad not ready yet');
+    console.log('[AdService] Interstitial ad not ready yet');
   }
 };

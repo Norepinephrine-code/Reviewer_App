@@ -31,7 +31,7 @@ export const QuizProvider = ({ children }) => {
    * @param {Array} questionsArray List of question objects fetched from Firestore.
    */
   const startQuiz = (questionsArray) => {
-    console.log('Starting quiz');
+    console.log('[QuizContext] Quiz session started');
     setQuestions(questionsArray);
     setCurrentQuestionIndex(0);
     setUserAnswers({});
@@ -48,14 +48,14 @@ export const QuizProvider = ({ children }) => {
 
     const questionId = question.id ?? currentQuestionIndex;
 
-    console.log(`Submitting answer for question ${questionId}:`, selectedOption);
+    const isCorrect = selectedOption === question.correctIndex;
+    console.log('[QuizContext] Answer submitted:', selectedOption, 'Correct:', isCorrect);
     setUserAnswers((prev) => ({ ...prev, [questionId]: selectedOption }));
 
-    const correctIndex = question.correctIndex;
-    if (selectedOption === correctIndex) {
+    if (isCorrect) {
       setScore((prev) => {
         const newScore = prev + 1;
-        console.log('Score updated:', newScore);
+        console.log('[QuizContext] Score updated:', newScore);
         return newScore;
       });
     }
@@ -67,7 +67,7 @@ export const QuizProvider = ({ children }) => {
   const goToNextQuestion = () => {
     setCurrentQuestionIndex((prev) => {
       const nextIndex = Math.min(prev + 1, questions.length - 1);
-      console.log('Moving to question index:', nextIndex);
+      console.log('[QuizContext] Current question index:', nextIndex);
       return nextIndex;
     });
   };
@@ -76,7 +76,7 @@ export const QuizProvider = ({ children }) => {
    * Clears all quiz data allowing a new session to start.
    */
   const resetQuiz = () => {
-    console.log('Resetting quiz');
+    console.log('[QuizContext] Quiz reset');
     setQuestions([]);
     setCurrentQuestionIndex(0);
     setUserAnswers({});

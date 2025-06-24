@@ -12,10 +12,10 @@ const VERIFY_RECEIPT_URL = 'https://your-secure-endpoint.com/verifyReceipt';
  * @returns {Promise<{success: boolean, error?: string}>} Result of processing
  */
 export const verifyAndProcessPayment = async (userId, purchaseId, platform, amount) => {
-  console.log('Starting verifyAndProcessPayment for purchaseId:', purchaseId);
+  console.log('[PaymentService] Starting verification for purchaseId:', purchaseId);
 
   try {
-    console.log('Sending receipt to server for verification...');
+    console.log('[PaymentService] Sending receipt to server for verification...');
     const response = await fetch(VERIFY_RECEIPT_URL, {
       method: 'POST',
       headers: {
@@ -26,21 +26,23 @@ export const verifyAndProcessPayment = async (userId, purchaseId, platform, amou
 
     const result = await response.json();
 
+    console.log('[PaymentService] Payment verification result:', result);
+
     if (!response.ok || !result.verified) {
-      console.log('Receipt verification failed:', result);
+      console.log('[PaymentService] Receipt verification failed');
       return { success: false, error: 'Verification failed' };
     }
 
-    console.log('Receipt verified, creating payment record...');
+    console.log('[PaymentService] Receipt verified, creating payment record...');
     await createPaymentRecord(userId, purchaseId, platform, amount, 'completed');
 
-    console.log('Updating user plan status to premium...');
+    console.log('[PaymentService] Updating user plan status to premium...');
     await updateUserPlanStatus(userId, 'premium');
 
-    console.log('Payment processed successfully');
+    console.log('[PaymentService] Payment processed successfully');
     return { success: true };
   } catch (error) {
-    console.log('Error during verifyAndProcessPayment:', error);
+    console.log('[PaymentService] Error during verifyAndProcessPayment:', error);
     return { success: false, error: error.message };
   }
 };
